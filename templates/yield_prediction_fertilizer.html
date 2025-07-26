@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fertilizer-Based Yield Prediction</title>
+    <link rel="stylesheet" href="/static/css/yield.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Fertilizer-Based Yield Prediction</h1>
+        <form action="/yield_prediction_Fertilizer" method="POST">
+            <label for="nitrogen">Nitrogen (kg/ha):</label>
+            <input type="number" step="0.01" name="nitrogen" id="nitrogen" required>
+
+            <label for="phosphorus">Phosphorus (kg/ha):</label>
+            <input type="number" step="0.01" name="phosphorus" id="phosphorus" required>
+
+            <label for="potassium">Potassium (kg/ha):</label>
+            <input type="number" step="0.01" name="potassium" id="potassium" required>
+
+            <button type="submit">Predict Yield</button>
+        </form>
+
+        {% if result %}
+        <div class="results">
+            {% if result.error %}
+                <p style="color: red;"><strong>Error:</strong> {{ result.error }}</p>
+            {% else %}
+                <p><strong>Predicted Yield:</strong> {{ result.predicted_yield }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/integra.css">
+    <title>Analysis Results</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: rgb(50, 151, 84);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: rgb(50, 151, 84);
+            color: white;
+            text-align: left;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        /* Image Styling */
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 70%; /* Reduce size of the image */
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Link Styling */
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: rgb(50, 151, 84);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        a:hover {
+            background-color: rgb(34, 102, 56);
+        }
+        .recommendations {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .recommendations h3 {
+            color: rgb(50, 151, 84);
+            margin-bottom: 10px;
+        }
+        .recommendations p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Analysis Results</h1>
+        <img src="{{ image_path }}" alt="Uploaded Image">
+
+        <h2>Growth Health Analysis</h2>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <td>Predicted Label</td>
+                <td>{{ growth_results['Predicted Label'] }}</td>
+            </tr>
+            <tr>
+                <td>Confidence</td>
+                <td>{{ growth_results['Confidence'] }}</td>
+            </tr>
+        </table>
+
+        <h2>Pest Detection</h2>
+        <table>
+            <tr>
+                <th>Pest Type</th>
+                <th>Confidence</th>
+            </tr>
+            {% for pest, confidences in pest_results.items() %}
+            <tr>
+                <td>{{ pest }}</td>
+                <td>{{ ", ".join(confidences) }}</td>
+              <!-- Access confidence key here -->
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Weed Severity Classification</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Class</th>
+            <th>Confidence (%)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if weed_results.top_prediction == "No results" %}
+        <tr>
+            <td colspan="1">Severity Level</td>
+            <td colspan="2">No results</td>
+        </tr>
+        {% else %}
+        {% for prediction in weed_results.all_predictions %}
+        <tr>
+            <td>{{ prediction.class }}</td>
+            <td>{{ prediction.confidence }}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+<div class="recommendations">
+    <h3>Recommendations</h3>
+
+    {% if fertilizer_recommendation %}
+        <p><strong>Fertilizer:</strong> {{ fertilizer_recommendation }}</p>
+    {% endif %}
+
+    {% if herbicide_recommendation %}
+        <p><strong>Herbicide:</strong> {{ herbicide_recommendation }}</p>
+    {% endif %}
+
+    {% if pesticide_recommendation %}
+        <p><strong>Pesticide:</strong> {{ pesticide_recommendation }}</p>
+    {% endif %}
+
+    {% if not fertilizer_recommendation and not herbicide_recommendation and not pesticide_recommendation %}
+        <p>No specific recommendation available.</p>
+    {% endif %}
+</div>
+        <a href="/upload">Analyze Another Image</a>
+    </div>
+</body>
+</html>

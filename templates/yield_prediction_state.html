@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State-Based Yield Prediction</title>
+    <link rel="stylesheet" href="/static/css/yield.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Area-Based Yield Prediction</h1>
+        <form action="/yield_prediction_Production" method="POST">
+            <label for="state">State:</label>
+            <select name="state" id="state" required>
+                {% for state in states %}
+                    <option value="{{ state }}">{{ state }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="district">District:</label>
+            <select name="district" id="district" required>
+                {% for district in districts %}
+                    <option value="{{ district }}">{{ district }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="season">Season:</label>
+            <select name="season" id="season" required>
+                {% for season in seasons %}
+                    <option value="{{ season }}">{{ season }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="year">Year:</label>
+            <input type="number" name="year" id="year" placeholder="Year" required>
+
+            <label for="area">Area (Hectares):</label>
+            <input type="number" step="0.01" name="area" id="area" placeholder="Area (Hectares)" required>
+
+            <label for="production">Production (Tonnes):</label>
+            <input type="number" step="0.01" name="production" id="production" placeholder="Production (Tonnes)" required>
+
+            <button type="submit">Predict Yield</button>
+        </form>
+
+        {% if result %}
+        <div class="results">
+            {% if result.error %}
+                <p style="color: red;"><strong>Error:</strong> {{ result.error }}</p>
+            {% else %}
+                <p><strong>Predicted Yield:</strong> {{ result.predicted_yield }}</p>
+                <p><strong>Confidence Interval:</strong> {{ result.confidence_interval }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

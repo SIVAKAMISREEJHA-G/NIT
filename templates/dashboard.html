@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Dashboard</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: rgb(50, 151, 84);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Analysis Dashboard</h1>
+    {% if analysis_results %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Growth Health Analysis</th>
+                    <th>Pest Detection</th>
+                    <th>Weed Severity Classification</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in analysis_results %}
+                    <tr>
+                        <td>{{ result['ID'] }}</td>
+                        <td>{{ result['Growth Health Analysis'] }}</td>
+                        <td>{{ result['Pest Detection'] }}</td>
+                        <td>{{ result['Weed Severity Classification'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No analysis results saved yet.</p>
+    {% endif %}
+    <a href="/upload">Upload Another Image</a>
+</body>
+</html>
